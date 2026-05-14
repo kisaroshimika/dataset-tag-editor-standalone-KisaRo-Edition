@@ -102,6 +102,7 @@ def on_ui_tabs():
                     type="pil",
                     elem_id="single_image_preview",
                     height=500,
+                    interactive=True,
                 )
             with gr.Column(scale=1):
                 gr.Markdown("### タグ出力")
