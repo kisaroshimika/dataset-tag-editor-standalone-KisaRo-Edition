@@ -8,29 +8,40 @@ setting_inputs = {}
 restore_funcs = {}
 
 
+from i18n import i18n
+
 def create_components():
     global setting_inputs
     th = get_type_hints(settings.Settings)
 
     for name, ty in th.items():
         s = getattr(settings.current, name)
-        desc = settings.DESCRIPTIONS[name]
+        # i18n から名前(name)で翻訳を取得。なければ既存の説明文を使用
+        label = i18n(name)
+        if label == name:
+            label = settings.DESCRIPTIONS.get(name, name)
+            
         if ty is int or ty is float:
-            elem = gr.Number(value=s, label=desc)
+            elem = gr.Number(value=s, label=label)
 
             def restore(value):
                 return gr.Number(value=value)
 
         elif ty is bool:
-            elem = gr.Checkbox(value=s, label=desc)
+            elem = gr.Checkbox(value=s, label=label)
 
             def restore(value):
                 return gr.Checkbox(value=value)
 
         elif ty is str:
-            elem = gr.Textbox(value=s, label=desc)
-
+            if name == "ui_language":
+                elem = gr.Dropdown(choices=["en", "jp"], value=s, label=label)
+            else:
+                elem = gr.Textbox(value=s, label=label)
+            
             def restore(value):
+                if name == "ui_language":
+                    return gr.Dropdown(value=value)
                 return gr.Textbox(value=value)
 
         else:
@@ -41,12 +52,12 @@ def create_components():
 
 def on_ui_tabs():
     with gr.Row():
-        btn_save = gr.Button("Save Settings", variant="primary")
-        btn_restore = gr.Button("Restore Default Settings")
+        btn_save = gr.Button(i18n("save_settings"), variant="primary")
+        btn_restore = gr.Button(i18n("restore_defaults"))
     with gr.Column():
         create_components()
     
-    btn_reload = gr.Button("Reload UI", variant="primary", elem_id="reload_ui")
+    btn_reload = gr.Button(i18n("reload_ui"), variant="primary", elem_id="reload_ui")
 
     def request_restart():
         from shared_state import state

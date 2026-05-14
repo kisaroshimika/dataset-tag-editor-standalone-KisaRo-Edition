@@ -5,6 +5,7 @@ import gradio as gr
 from dte_instance import dte_instance
 from dataset_tag_editor import taggers_builtin
 import logger
+from i18n import i18n
 
 
 def get_tagger_model_names():
@@ -24,10 +25,10 @@ def get_tagger_model_names():
 def extract_tags(image, model_name, threshold, sort_by_confidence):
     """画像からタグを抽出する"""
     if image is None:
-        return "", "画像が選択されていません"
+        return "", i18n("no_image")
 
     if not model_name:
-        return "", "モデルが選択されていません"
+        return "", i18n("no_model")
 
     try:
         logger.write(f"タグ抽出開始: model={model_name}, threshold={threshold}")
@@ -39,8 +40,8 @@ def extract_tags(image, model_name, threshold, sort_by_confidence):
             return "", "タグが抽出できませんでした"
 
         tag_str = ", ".join([tag for tag, _ in results])
-        status = f"完了 — {len(results)} タグ抽出"
-        logger.write(f"タグ抽出完了: {len(results)} tags")
+        status = f"{i18n('done')} — {len(results)} tags"
+        logger.write(f"Tags extracted: {len(results)} tags")
         return tag_str, status
 
     except Exception as e:
@@ -60,13 +61,13 @@ def on_ui_tabs():
         # ---- 上部コントロール行 ----
         with gr.Row(elem_classes="controls-row"):
             dd_model = gr.Dropdown(
-                label="モデル",
+                label=i18n("model"),
                 choices=tagger_names,
                 value=default_model,
                 scale=4,
             )
             nb_threshold = gr.Number(
-                label="Threshold",
+                label=i18n("threshold"),
                 value=0.5296,
                 minimum=0.0,
                 maximum=1.0,
@@ -74,21 +75,21 @@ def on_ui_tabs():
                 scale=1,
             )
             cb_sort_confidence = gr.Checkbox(
-                label="確率（Confidence）が高い順にソート",
+                label=i18n("sort_confidence"),
                 value=False,
                 scale=1,
             )
             with gr.Column(scale=2, elem_classes="action-buttons"):
                 with gr.Row():
-                    btn_extract = gr.Button("タグ抽出", variant="primary")
-                    btn_copy = gr.Button("コピー", variant="secondary")
+                    btn_extract = gr.Button(i18n("extract_tags"), variant="primary")
+                    btn_copy = gr.Button(i18n("copy"), variant="secondary")
                 with gr.Row():
-                    btn_clear = gr.Button("クリア", variant="secondary")
+                    btn_clear = gr.Button(i18n("clear"), variant="secondary")
 
         # ---- ステータス ----
         tb_status = gr.Textbox(
             label="",
-            value="待機中",
+            value=i18n("waiting"),
             interactive=False,
             elem_id="single_image_status",
         )
@@ -96,7 +97,7 @@ def on_ui_tabs():
         # ---- メイン表示エリア（2カラム） ----
         with gr.Row(elem_classes="result-row", equal_height=True):
             with gr.Column(scale=1):
-                gr.Markdown("### プレビュー")
+                gr.Markdown(f"### {i18n('preview')}")
                 img_preview = gr.Image(
                     label=None,
                     type="pil",
@@ -105,7 +106,7 @@ def on_ui_tabs():
                     interactive=True,
                 )
             with gr.Column(scale=1):
-                gr.Markdown("### タグ出力")
+                gr.Markdown(f"### {i18n('tags_output')}")
                 tb_tags = gr.Textbox(
                     label=None,
                     value="",
@@ -122,7 +123,7 @@ def on_ui_tabs():
         def on_image_change(image, model_name, threshold, sort_by_confidence):
             """画像読み込み時に自動でタグ抽出"""
             if image is None:
-                return "", "待機中"
+                return "", i18n("waiting")
             return extract_tags(image, model_name, threshold, sort_by_confidence)
 
         def on_extract_click(image, model_name, threshold, sort_by_confidence):
@@ -131,13 +132,13 @@ def on_ui_tabs():
 
         def on_clear_click():
             """クリアボタン"""
-            return None, "", "待機中"
+            return None, "", i18n("waiting")
 
         def on_copy_done(tags):
             """コピー完了のステータス更新"""
             if tags:
-                return "コピーしました"
-            return "コピー対象がありません"
+                return i18n("copied")
+            return i18n("nothing_to_copy")
 
         # 画像変更時 → 自動タグ抽出
         img_preview.change(

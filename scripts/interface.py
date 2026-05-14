@@ -177,15 +177,17 @@ commit: <a href="https://github.com/toshiaki1729/dataset-tag-editor-standalone/c
 """
 
 
+from i18n import i18n
+
 def create_ui():
     reload_javascript()
 
     with gr.Blocks(analytics_enabled=False, title="Dataset Tag Editor") as gui:
-        with gr.Tab("Main"):
+        with gr.Tab(i18n("tab_main")):
             tab_single_image.on_ui_tabs()
-        with gr.Tab("一括処理"):
+        with gr.Tab(i18n("tab_bulk")):
             tab_main.on_ui_tabs()
-        with gr.Tab("Settings"):
+        with gr.Tab(i18n("tab_settings")):
             tab_settings.on_ui_tabs()
 
         gr.Textbox(elem_id="ui_created", value="", visible=False)

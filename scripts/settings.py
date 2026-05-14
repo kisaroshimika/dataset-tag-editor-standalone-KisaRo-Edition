@@ -6,6 +6,7 @@ SETTING_PATH = base_dir_path() / "settings.json"
 
 class Settings(NamedTuple):
     allowed_paths: str = ''
+    ui_language: str = 'en'
     use_temp_files: bool = False
     temp_directory: str = ''
     cleanup_tmpdir: bool = True
@@ -35,6 +36,7 @@ NAMES = list(Settings.__annotations__.keys())
 
 DESCRIPTIONS = {
     "allowed_paths": "Path whitelist to show images in gallery (for local use). Split paths by comma and space (, )",
+    "ui_language": "UI Language (en / jp) - Requires UI Reload",
     "use_temp_files": "Force using temporary file to show images on gallery",
     "temp_directory": "Directory to save temporary files",
     "cleanup_tmpdir": "Cleanup temporary files on startup",
