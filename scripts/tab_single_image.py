@@ -4,7 +4,7 @@ import gradio as gr
 
 from dte_instance import dte_instance
 from dataset_tag_editor import taggers_builtin
-import logger
+import settings
 from i18n import i18n
 
 
@@ -52,8 +52,8 @@ def extract_tags(image, model_name, threshold, sort_by_confidence):
 
 def on_ui_tabs():
     tagger_names = get_tagger_model_names()
-    # デフォルトモデル: wd-eva02-large-tagger-v3
-    default_model = "wd-eva02-large-tagger-v3"
+    # デフォルトモデル: 設定ファイルから取得
+    default_model = settings.current.single_tagger_default_model
     if default_model not in tagger_names:
         default_model = tagger_names[-1] if tagger_names else ""
 
@@ -68,7 +68,7 @@ def on_ui_tabs():
             )
             nb_threshold = gr.Number(
                 label=i18n("threshold"),
-                value=0.5296,
+                value=settings.current.single_tagger_default_threshold,
                 minimum=0.0,
                 maximum=1.0,
                 step=0.01,

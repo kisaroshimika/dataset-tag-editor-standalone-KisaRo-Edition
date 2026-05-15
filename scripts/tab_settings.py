@@ -22,9 +22,14 @@ def create_components():
             label = settings.DESCRIPTIONS.get(name, name)
             
         if ty is int or ty is float:
-            elem = gr.Number(value=s, label=label)
+            if name == "single_tagger_default_threshold":
+                elem = gr.Slider(value=s, label=label, minimum=0.0, maximum=1.0, step=0.01)
+            else:
+                elem = gr.Number(value=s, label=label)
 
             def restore(value):
+                if name == "single_tagger_default_threshold":
+                    return gr.Slider(value=value)
                 return gr.Number(value=value)
 
         elif ty is bool:
@@ -36,11 +41,16 @@ def create_components():
         elif ty is str:
             if name == "ui_language":
                 elem = gr.Dropdown(choices=["en", "jp"], value=s, label=label)
+            elif name == "single_tagger_default_model":
+                from tab_single_image import get_tagger_model_names
+                elem = gr.Dropdown(choices=get_tagger_model_names(), value=s, label=label)
             else:
                 elem = gr.Textbox(value=s, label=label)
             
             def restore(value):
                 if name == "ui_language":
+                    return gr.Dropdown(value=value)
+                elif name == "single_tagger_default_model":
                     return gr.Dropdown(value=value)
                 return gr.Textbox(value=value)
 

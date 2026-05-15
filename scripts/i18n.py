@@ -121,6 +121,8 @@ class I18n:
             "save_current_settings": "Save current settings",
             "restore_settings_default": "Restore settings to default",
             "filter_by_tags": "Filter by Tags",
+            "single_tagger_default_model": "Default Model (Main Tab)",
+            "single_tagger_default_threshold": "Default Threshold (Main Tab)",
 
             # Bulk Process Tab - Batch Edit
             "batch_edit_captions": "Batch Edit Captions",
@@ -315,6 +317,8 @@ class I18n:
             "save_current_settings": "現在の設定を保存",
             "restore_settings_default": "設定を初期化",
             "filter_by_tags": "タグで絞り込み",
+            "single_tagger_default_model": "デフォルトモデル (Mainタブ)",
+            "single_tagger_default_threshold": "デフォルトしきい値 (Mainタブ)",
 
             # Bulk Process Tab - Batch Edit
             "batch_edit_captions": "一括編集",

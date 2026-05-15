@@ -26,6 +26,8 @@ class Settings(NamedTuple):
     batch_size_convnext:int = 4
     batch_size_swinv2:int = 4
     batch_size_eva02_large:int = 4
+    single_tagger_default_model: str = 'wd-eva02-large-tagger-v3'
+    single_tagger_default_threshold: float = 0.5296
 
 
 DEFAULT = Settings()
@@ -56,6 +58,8 @@ DESCRIPTIONS = {
     "batch_size_convnext": "Inference batch size for ConvNeXt taggers",
     "batch_size_swinv2": "Inference batch size for SwinV2 taggers",
     "batch_size_eva02_large": "Inference batch size for EVA-02 large taggers",
+    "single_tagger_default_model": "Default Model (Main Tab) - Requires UI Reload",
+    "single_tagger_default_threshold": "Default Threshold (Main Tab) - Requires UI Reload",
 }
 
 
