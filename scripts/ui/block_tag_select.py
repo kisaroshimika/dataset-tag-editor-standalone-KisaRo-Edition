@@ -2,6 +2,7 @@ from typing import Callable
 import gradio as gr
 
 from .ui_common import *
+from i18n import i18n
 
 TagFilter = dte_module.filters.TagFilter
 Filter = dte_module.filters.Filter
@@ -36,30 +37,37 @@ class TagSelectUI:
         self.suffix = suffix
         self.regex = regex
 
-        self.tb_search_tags = gr.Textbox(label="Search Tags", interactive=True)
+        self.tb_search_tags = gr.Textbox(label=i18n("search_tags"), interactive=True)
         with gr.Row():
-            self.cb_prefix = gr.Checkbox(label="Prefix", value=False, interactive=True)
-            self.cb_suffix = gr.Checkbox(label="Suffix", value=False, interactive=True)
+            self.cb_prefix = gr.Checkbox(label=i18n("prefix"), value=False, interactive=True)
+            self.cb_suffix = gr.Checkbox(label=i18n("suffix"), value=False, interactive=True)
             self.cb_regex = gr.Checkbox(
-                label="Use regex", value=False, interactive=True
+                label=i18n("use_regex"), value=False, interactive=True
             )
         with gr.Row():
             self.rb_sort_by = gr.Radio(
-                choices=[e.value for e in SortBy],
+                choices=[
+                    (i18n("choice_alpha"), SortBy.ALPHA),
+                    (i18n("choice_frequency"), SortBy.FREQ),
+                    (i18n("choice_length"), SortBy.LEN),
+                ],
                 value=sort_by,
                 interactive=True,
-                label="Sort by",
+                label=i18n("sort_by"),
             )
             self.rb_sort_order = gr.Radio(
-                choices=[e.value for e in SortOrder],
+                choices=[
+                    (i18n("choice_asc"), SortOrder.ASC),
+                    (i18n("choice_desc"), SortOrder.DESC),
+                ],
                 value=sort_order,
                 interactive=True,
-                label="Sort Order",
+                label=i18n("sort_order"),
             )
         with gr.Row():
-            self.btn_select_visibles = gr.Button(value="Select visible tags")
-            self.btn_deselect_visibles = gr.Button(value="Deselect visible tags")
-        self.cbg_tags = gr.CheckboxGroup(label="Select Tags", interactive=True)
+            self.btn_select_visibles = gr.Button(value=i18n("select_visible"))
+            self.btn_deselect_visibles = gr.Button(value=i18n("deselect_visible"))
+        self.cbg_tags = gr.CheckboxGroup(label=i18n("select_tags"), interactive=True)
 
     def set_callbacks(self):
         o_update = self.cbg_tags

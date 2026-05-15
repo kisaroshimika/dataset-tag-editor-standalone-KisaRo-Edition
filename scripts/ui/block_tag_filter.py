@@ -2,6 +2,7 @@ from typing import Callable
 import gradio as gr
 
 from .ui_common import *
+from i18n import i18n
 
 filters = dte_module.filters
 TagFilter = filters.TagFilter
@@ -48,29 +49,36 @@ class TagFilterUI:
         self.suffix = suffix
         self.regex = regex
 
-        self.tb_search_tags = gr.Textbox(label="Search Tags", interactive=True)
+        self.tb_search_tags = gr.Textbox(label=i18n("search_tags"), interactive=True)
         with gr.Row():
             self.cb_prefix = gr.Checkbox(
-                label="Prefix", value=self.prefix, interactive=True
+                label=i18n("prefix"), value=self.prefix, interactive=True
             )
             self.cb_suffix = gr.Checkbox(
-                label="Suffix", value=self.suffix, interactive=True
+                label=i18n("suffix"), value=self.suffix, interactive=True
             )
             self.cb_regex = gr.Checkbox(
-                label="Use regex", value=self.regex, interactive=True
+                label=i18n("use_regex"), value=self.regex, interactive=True
             )
         with gr.Row():
             self.rb_sort_by = gr.Radio(
-                choices=[e.value for e in SortBy],
+                choices=[
+                    (i18n("choice_alpha"), SortBy.ALPHA),
+                    (i18n("choice_frequency"), SortBy.FREQ),
+                    (i18n("choice_length"), SortBy.LEN),
+                ],
                 value=sort_by,
                 interactive=True,
-                label="Sort by",
+                label=i18n("sort_by"),
             )
             self.rb_sort_order = gr.Radio(
-                choices=[e.value for e in SortOrder],
+                choices=[
+                    (i18n("choice_asc"), SortOrder.ASC),
+                    (i18n("choice_desc"), SortOrder.DESC),
+                ],
                 value=sort_order,
                 interactive=True,
-                label="Sort Order",
+                label=i18n("sort_order"),
             )
         v = (
             "AND"
@@ -80,18 +88,22 @@ class TagFilterUI:
             else "NONE"
         )
         self.rb_logic = gr.Radio(
-            choices=["AND", "OR", "NONE"],
+            choices=[
+                ("AND", "AND"),
+                ("OR", "OR"),
+                ("NONE", "NONE"),
+            ],
             value=v,
-            label="Filter Logic",
+            label=i18n("filter_logic"),
             interactive=True,
         )
         
         with gr.Row():
-            self.btn_select_visibles = gr.Button(value="Select visible tags")
-            self.btn_deselect_visibles = gr.Button(value="Deselect visible tags")
+            self.btn_select_visibles = gr.Button(value=i18n("select_visible"))
+            self.btn_deselect_visibles = gr.Button(value=i18n("deselect_visible"))
             
         self.cbg_tags = gr.CheckboxGroup(
-            label="Filter Images by Tags", interactive=True
+            label=i18n("filter_images_by_tags"), interactive=True
         )
 
     def after_filter_update(

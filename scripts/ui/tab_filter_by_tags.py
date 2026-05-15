@@ -5,6 +5,7 @@ import gradio as gr
 from .ui_common import *
 from .uibase import UIBase
 from .block_tag_filter import TagFilterUI
+from i18n import i18n
 
 if TYPE_CHECKING:
     from .ui_classes import *
@@ -23,12 +24,12 @@ class FilterByTagsUI(UIBase):
 
     def create_ui(self, cfg_filter_p, cfg_filter_n, get_filters: Callable[[], list[dte_module.filters.Filter]]):
         with gr.Row():
-            self.btn_clear_tag_filters = gr.Button(value="Clear tag filters")
-            self.btn_clear_all_filters = gr.Button(value="Clear ALL filters")
+            self.btn_clear_tag_filters = gr.Button(value=i18n("clear_tag_filters"))
+            self.btn_clear_all_filters = gr.Button(value=i18n("clear_all_filters"))
 
-        with gr.Tab(label="Positive Filter"):
+        with gr.Tab(label=i18n("positive_filter")):
             with gr.Column(variant="panel"):
-                gr.HTML(value="Search tags / Filter images by tags <b>(INCLUSIVE)</b>")
+                gr.HTML(value=i18n("filter_by_tags_inclusive"))
                 logic_p = (
                     filters.TagFilter.Logic.OR
                     if cfg_filter_p.logic == "OR"
@@ -46,9 +47,9 @@ class FilterByTagsUI(UIBase):
                     cfg_filter_p.sw_regex,
                 )
 
-        with gr.Tab(label="Negative Filter"):
+        with gr.Tab(label=i18n("negative_filter")):
             with gr.Column(variant="panel"):
-                gr.HTML(value="Search tags / Filter images by tags <b>(EXCLUSIVE)</b>")
+                gr.HTML(value=i18n("filter_by_tags_exclusive"))
                 logic_n = (
                     filters.TagFilter.Logic.AND
                     if cfg_filter_n.logic == "AND"

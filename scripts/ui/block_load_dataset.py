@@ -5,6 +5,7 @@ import gradio as gr
 import settings
 from .ui_common import *
 from .uibase import UIBase
+from i18n import i18n
 
 if TYPE_CHECKING:
     from .ui_classes import *
@@ -17,54 +18,54 @@ class LoadDatasetUI(UIBase):
             with gr.Row():
                 with gr.Column(scale=3):
                     self.tb_img_directory = gr.Textbox(
-                        label="Dataset directory",
+                        label=i18n("dataset_dir"),
                         placeholder="C:\\directory\\of\\datasets",
                         value=cfg_general.dataset_dir,
                     )
                 with gr.Column(scale=1, min_width=60):
                     self.tb_caption_file_ext = gr.Textbox(
-                        label="Caption File Ext",
+                        label=i18n("caption_ext"),
                         placeholder=".txt (on Load and Save)",
                         value=cfg_general.caption_ext,
                     )
                 with gr.Column(scale=1, min_width=80):
-                    self.btn_load_datasets = gr.Button(value="Load")
-                    self.btn_unload_datasets = gr.Button(value="Unload")
-            with gr.Accordion(label="Dataset Load Settings"):
+                    self.btn_load_datasets = gr.Button(value=i18n("load"))
+                    self.btn_unload_datasets = gr.Button(value=i18n("unload"))
+            with gr.Accordion(label=i18n("load_settings")):
                 with gr.Row():
                     with gr.Column():
                         self.cb_load_recursive = gr.Checkbox(
                             value=cfg_general.load_recursive,
-                            label="Load from subdirectories",
+                            label=i18n("load_subdirs"),
                         )
                         self.cb_load_caption_from_filename = gr.Checkbox(
                             value=cfg_general.load_caption_from_filename,
-                            label="Load caption from filename if no text file exists",
+                            label=i18n("load_filename_as_caption"),
                         )
                         self.cb_replace_new_line_with_comma = gr.Checkbox(
                             value=cfg_general.replace_new_line,
-                            label="Replace new-line character with comma",
+                            label=i18n("replace_newline"),
                         )
                     with gr.Column():
                         self.rb_use_interrogator = gr.Radio(
                             choices=[
-                                "No",
-                                "If Empty",
-                                "Overwrite",
-                                "Prepend",
-                                "Append",
+                                (i18n("choice_no"), "No"),
+                                (i18n("choice_if_empty"), "If Empty"),
+                                (i18n("choice_overwrite"), "Overwrite"),
+                                (i18n("choice_prepend"), "Prepend"),
+                                (i18n("choice_append"), "Append"),
                             ],
                             value=cfg_general.use_interrogator,
-                            label="Use Interrogator Caption",
+                            label=i18n("use_interrogator"),
                         )
                         self.dd_intterogator_names = gr.Dropdown(
-                            label="Interrogators",
+                            label=i18n("interrogators"),
                             choices=dte_instance.INTERROGATOR_NAMES,
                             value=cfg_general.use_interrogator_names,
                             interactive=True,
                             multiselect=True,
                         )
-            with gr.Accordion(label="Interrogator Settings", open=False):
+            with gr.Accordion(label=i18n("interrogator_settings"), open=False):
                 with gr.Row():
                     self.sl_custom_threshold_booru = gr.Slider(
                         minimum=0,
@@ -72,7 +73,7 @@ class LoadDatasetUI(UIBase):
                         value=cfg_general.custom_threshold_booru,
                         step=0.01,
                         interactive=True,
-                        label="Booru Score Threshold",
+                        label=i18n("booru_threshold"),
                     )
                 with gr.Row():
                     self.sl_custom_threshold_z3d = gr.Slider(
@@ -81,12 +82,12 @@ class LoadDatasetUI(UIBase):
                         value=cfg_general.custom_threshold_z3d,
                         step=0.01,
                         interactive=True,
-                        label="Z3D-E621 Score Threshold",
+                        label=i18n("z3d_threshold"),
                     )
                 with gr.Row():
                     self.cb_use_custom_threshold_waifu = gr.Checkbox(
                         value=cfg_general.use_custom_threshold_waifu,
-                        label="Use Custom Threshold (WDv1.4 Tagger)",
+                        label=i18n("use_wd_threshold"),
                         interactive=True,
                     )
                     self.sl_custom_threshold_waifu = gr.Slider(
@@ -95,7 +96,7 @@ class LoadDatasetUI(UIBase):
                         value=cfg_general.custom_threshold_waifu,
                         step=0.01,
                         interactive=True,
-                        label="WDv1.4 Tagger Score Threshold",
+                        label=i18n("wd_threshold"),
                     )
 
     def set_callbacks(

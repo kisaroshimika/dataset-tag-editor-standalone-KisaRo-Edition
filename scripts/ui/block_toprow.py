@@ -4,6 +4,7 @@ import gradio as gr
 
 from .ui_common import *
 from .uibase import UIBase
+from i18n import i18n
 
 if TYPE_CHECKING:
     from .ui_classes import *
@@ -15,21 +16,21 @@ class ToprowUI(UIBase):
             with gr.Row():
                 with gr.Column(scale=1):
                     self.btn_save_all_changes = gr.Button(
-                        value="Save all changes", variant="primary"
+                        value=i18n("save_all"), variant="primary"
                     )
                 with gr.Column(scale=2):
                     self.cb_backup = gr.Checkbox(
                         value=cfg_general.backup,
-                        label="Backup original text file (original file will be renamed like filename.000, .001, .002, ...)",
+                        label=i18n("backup"),
                         interactive=True,
                     )
             gr.HTML(
-                value="<b>Note:</b> New text file will be created if you are using filename as captions."
+                value=i18n("note_new_text_file")
             )
             with gr.Row():
                 self.cb_save_kohya_metadata = gr.Checkbox(
                     value=cfg_general.save_kohya_metadata,
-                    label="Use kohya-ss's finetuning metadata json",
+                    label=i18n("use_kohya_metadata"),
                     interactive=True,
                 )
             with gr.Row():
@@ -37,33 +38,33 @@ class ToprowUI(UIBase):
                     variant="panel", visible=cfg_general.save_kohya_metadata
                 ) as self.cl_kohya_metadata:
                     self.tb_metadata_output = gr.Textbox(
-                        label="json path",
+                        label=i18n("json_path"),
                         placeholder="C:\\path\\to\\metadata.json",
                         value=cfg_general.meta_output_path,
                     )
                     self.tb_metadata_input = gr.Textbox(
-                        label="json input path (Optional, only for append results)",
+                        label=i18n("json_input_path"),
                         placeholder="C:\\path\\to\\metadata.json",
                         value=cfg_general.meta_input_path,
                     )
                     with gr.Row():
                         self.cb_metadata_overwrite = gr.Checkbox(
                             value=cfg_general.meta_overwrite,
-                            label="Overwrite if output file exists",
+                            label=i18n("overwrite_if_exists"),
                             interactive=True,
                         )
                         self.cb_metadata_as_caption = gr.Checkbox(
                             value=cfg_general.meta_save_as_caption,
-                            label="Save metadata as caption",
+                            label=i18n("save_as_caption"),
                             interactive=True,
                         )
                         self.cb_metadata_use_fullpath = gr.Checkbox(
                             value=cfg_general.meta_use_full_path,
-                            label="Save metadata image key as fullpath",
+                            label=i18n("save_full_path"),
                             interactive=True,
                         )
             with gr.Row(visible=False):
-                self.txt_result = gr.Textbox(label="Results", interactive=False)
+                self.txt_result = gr.Textbox(label=i18n("results"), interactive=False)
 
     def set_callbacks(self, load_dataset: LoadDatasetUI):
         def save_all_changes(

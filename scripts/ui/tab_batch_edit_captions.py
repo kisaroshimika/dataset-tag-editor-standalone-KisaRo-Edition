@@ -5,6 +5,7 @@ import gradio as gr
 from .ui_common import *
 from .uibase import UIBase
 from .block_tag_select import TagSelectUI
+from i18n import i18n
 
 if TYPE_CHECKING:
     from .ui_classes import *
@@ -21,24 +22,24 @@ class BatchEditCaptionsUI(UIBase):
     def create_ui(
         self, cfg_batch_edit, get_filters: Callable[[], list[dte_module.filters.Filter]]
     ):
-        with gr.Tab(label="Search and Replace"):
+        with gr.Tab(label=i18n("search_and_replace")):
             with gr.Column(variant="panel"):
-                gr.HTML("Edit common tags.")
+                gr.HTML(i18n("edit_common_tags"))
                 self.cb_show_only_tags_selected = gr.Checkbox(
                     value=cfg_batch_edit.show_only_selected,
-                    label="Show only the tags selected in the Positive Filter",
+                    label=i18n("show_only_positive"),
                 )
                 self.show_only_selected_tags = cfg_batch_edit.show_only_selected
-                self.tb_common_tags = gr.Textbox(label="Common Tags", interactive=False)
-                self.tb_edit_tags = gr.Textbox(label="Edit Tags", interactive=True)
+                self.tb_common_tags = gr.Textbox(label=i18n("common_tags"), interactive=False)
+                self.tb_edit_tags = gr.Textbox(label=i18n("edit_tags"), interactive=True)
                 self.cb_prepend_tags = gr.Checkbox(
-                    value=cfg_batch_edit.prepend, label="Prepend additional tags"
+                    value=cfg_batch_edit.prepend, label=i18n("prepend_additional")
                 )
                 self.btn_apply_edit_tags = gr.Button(
-                    value="Apply changes to filtered images", variant="primary"
+                    value=i18n("apply_to_filtered"), variant="primary"
                 )
                 with gr.Accordion(
-                    label="Show description of how to edit tags", open=False
+                    label=i18n("show_edit_description"), open=False
                 ):
                     gr.HTML(
                         value="""
@@ -60,38 +61,42 @@ class BatchEditCaptionsUI(UIBase):
                     """
                     )
             with gr.Column(variant="panel"):
-                gr.HTML("Search and Replace for all images displayed.")
+                gr.HTML(i18n("search_and_replace_displayed"))
                 self.tb_sr_search_tags = gr.Textbox(
-                    label="Search Text", interactive=True
+                    label=i18n("search_text"), interactive=True
                 )
                 self.tb_sr_replace_tags = gr.Textbox(
-                    label="Replace Text", interactive=True
+                    label=i18n("replace_text"), interactive=True
                 )
                 self.cb_use_regex = gr.Checkbox(
-                    label="Use regex", value=cfg_batch_edit.use_regex
+                    label=i18n("use_regex"), value=cfg_batch_edit.use_regex
                 )
                 self.rb_sr_replace_target = gr.Radio(
-                    ["Only Selected Tags", "Each Tags", "Entire Caption"],
+                    choices=[
+                        (i18n("choice_only_selected_tags"), "Only Selected Tags"),
+                        (i18n("choice_each_tags"), "Each Tags"),
+                        (i18n("choice_entire_caption"), "Entire Caption"),
+                    ],
                     value=cfg_batch_edit.target,
-                    label="Search and Replace in",
+                    label=i18n("search_and_replace_in"),
                     interactive=True,
                 )
                 self.tb_sr_selected_tags = gr.Textbox(
-                    label="Selected Tags", interactive=False, lines=2
+                    label=i18n("selected_tags"), interactive=False, lines=2
                 )
                 self.btn_apply_sr_tags = gr.Button(
-                    value="Search and Replace", variant="primary"
+                    value=i18n("search_and_replace"), variant="primary"
                 )
-        with gr.Tab(label="Remove"):
+        with gr.Tab(label=i18n("remove")):
             with gr.Column(variant="panel"):
-                gr.HTML("Remove <b>duplicate</b> tags from the images displayed.")
+                gr.HTML(i18n("remove_duplicate_info"))
                 self.btn_remove_duplicate = gr.Button(
-                    value="Remove duplicate tags", variant="primary"
+                    value=i18n("remove_duplicate"), variant="primary"
                 )
             with gr.Column(variant="panel"):
-                gr.HTML("Remove <b>selected</b> tags from the images displayed.")
+                gr.HTML(i18n("remove_selected_info"))
                 self.btn_remove_selected = gr.Button(
-                    value="Remove selected tags", variant="primary"
+                    value=i18n("remove_selected"), variant="primary"
                 )
                 self.tag_select_ui_remove.create_ui(
                     get_filters,
@@ -101,30 +106,37 @@ class BatchEditCaptionsUI(UIBase):
                     cfg_batch_edit.sw_suffix,
                     cfg_batch_edit.sw_regex,
                 )
-        with gr.Tab(label="Extras"):
+        with gr.Tab(label=i18n("extras")):
             with gr.Column(variant="panel"):
-                gr.HTML("Sort tags in the images displayed.")
+                gr.HTML(i18n("sort_displayed_info"))
                 with gr.Row():
                     self.rb_sort_by = gr.Radio(
-                        choices=[e.value for e in SortBy],
+                        choices=[
+                            (i18n("choice_alpha"), SortBy.ALPHA),
+                            (i18n("choice_frequency"), SortBy.FREQ),
+                            (i18n("choice_length"), SortBy.LEN),
+                        ],
                         value=cfg_batch_edit.batch_sort_by,
                         interactive=True,
-                        label="Sort by",
+                        label=i18n("sort_by"),
                     )
                     self.rb_sort_order = gr.Radio(
-                        choices=[e.value for e in SortOrder],
+                        choices=[
+                            (i18n("choice_asc"), SortOrder.ASC),
+                            (i18n("choice_desc"), SortOrder.DESC),
+                        ],
                         value=cfg_batch_edit.batch_sort_order,
                         interactive=True,
-                        label="Sort Order",
+                        label=i18n("sort_order"),
                     )
-                self.btn_sort_selected = gr.Button(value="Sort tags", variant="primary")
+                self.btn_sort_selected = gr.Button(value=i18n("sort_tags"), variant="primary")
             with gr.Column(variant="panel"):
-                gr.HTML("Truncate tags by token count.")
+                gr.HTML(i18n("truncate_info"))
                 self.nb_token_count = gr.Number(
                     value=cfg_batch_edit.token_count, precision=0
                 )
                 self.btn_truncate_by_token = gr.Button(
-                    value="Truncate tags by token count", variant="primary"
+                    value=i18n("truncate_button"), variant="primary"
                 )
 
     def set_callbacks(

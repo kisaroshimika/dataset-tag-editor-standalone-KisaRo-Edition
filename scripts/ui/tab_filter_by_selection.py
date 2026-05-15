@@ -4,6 +4,7 @@ import gradio as gr
 
 from .ui_common import *
 from .uibase import UIBase
+from i18n import i18n
 
 if TYPE_CHECKING:
     from .ui_classes import *
@@ -19,35 +20,35 @@ class FilterBySelectionUI(UIBase):
         self.tmp_selection = set()
 
     def get_current_txt_selection(self):
-        return f"""Selected Image : {self.selected_path}"""
+        return f"""{i18n("selected_image_path")} {self.selected_path}"""
 
     def create_ui(self, image_columns: int):
-        gr.HTML("""Select images from the left gallery.""")
+        gr.HTML(i18n("select_from_left"))
 
         with gr.Column(variant="panel"):
             with gr.Row():
                 self.btn_add_image_selection = gr.Button(
-                    value="Add selection [Enter]",
+                    value=i18n("add_selection"),
                     elem_id="btn_add_image_selection",
                 )
                 self.btn_add_all_displayed_image_selection = gr.Button(
-                    value="Add ALL Displayed"
+                    value=i18n("add_all_displayed")
                 )
 
             self.gl_filter_images = gr.Gallery(
-                label="Filter Images", elem_id="filter_gallery", columns=image_columns)
+                label=i18n("filter_images"), elem_id="filter_gallery", columns=image_columns)
             self.txt_selection = gr.HTML(value=self.get_current_txt_selection())
 
             with gr.Row():
                 self.btn_remove_image_selection = gr.Button(
-                    value="Remove selection [Delete]",
+                    value=i18n("remove_selection"),
                     elem_id="btn_remove_image_selection",
                 )
-                self.btn_invert_image_selection = gr.Button(value="Invert selection")
-                self.btn_clear_image_selection = gr.Button(value="Clear selection")
+                self.btn_invert_image_selection = gr.Button(value=i18n("invert_selection"))
+                self.btn_clear_image_selection = gr.Button(value=i18n("clear_selection"))
 
         self.btn_apply_image_selection_filter = gr.Button(
-            value="Apply selection filter", variant="primary"
+            value=i18n("apply_selection_filter"), variant="primary"
         )
 
     def set_callbacks(

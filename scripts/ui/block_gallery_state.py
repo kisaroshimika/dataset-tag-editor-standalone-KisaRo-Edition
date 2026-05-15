@@ -4,6 +4,7 @@ import gradio as gr
 
 from .ui_common import *
 from .uibase import UIBase
+from i18n import i18n
 
 if TYPE_CHECKING:
     from .ui_classes import *
