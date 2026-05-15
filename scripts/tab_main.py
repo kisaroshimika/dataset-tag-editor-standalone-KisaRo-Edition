@@ -405,4 +405,4 @@ def on_ui_tabs():
             update_filter_and_gallery,
         )
 
-    return (interface, "Dataset Tag Editor")
+    return (interface, "Dataset Tag Editor - KisaRo Edition")

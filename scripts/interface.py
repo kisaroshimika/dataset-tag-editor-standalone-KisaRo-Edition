@@ -173,7 +173,7 @@ torch: {getattr(torch, '__long_version__',torch.__version__)}
  • 
 gradio: {gr.__version__}
  • 
-commit: <a href="https://github.com/toshiaki1729/dataset-tag-editor-standalone/commit/{commit}">{short_commit}</a>
+commit: <a href="https://github.com/kisaroshimika/dataset-tag-editor-standalone-KisaRo-Edition/commit/{commit}">{short_commit}</a>
 """
 
 
@@ -182,7 +182,7 @@ from i18n import i18n
 def create_ui():
     reload_javascript()
 
-    with gr.Blocks(analytics_enabled=False, title="Dataset Tag Editor") as gui:
+    with gr.Blocks(analytics_enabled=False, title="Dataset Tag Editor - KisaRo Edition") as gui:
         with gr.Tab(i18n("tab_main")):
             tab_single_image.on_ui_tabs()
         with gr.Tab(i18n("tab_bulk")):
