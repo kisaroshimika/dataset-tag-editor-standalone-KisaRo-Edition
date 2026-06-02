@@ -5,6 +5,7 @@ import gradio as gr
 from dte_instance import dte_instance
 from dataset_tag_editor import taggers_builtin
 import settings
+import logger
 from i18n import i18n
 
 
